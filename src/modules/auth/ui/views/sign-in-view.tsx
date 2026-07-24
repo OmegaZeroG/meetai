@@ -170,8 +170,8 @@ export const SignInView = () => {
                         </form>
                     </Form>
 
-                    <div className = "bg-radial from-green-500 to-green-900 relative hidden md:flex flex-col gap-y-4 items-center justify-center">
-                        <img src="/logo.svg" alt="Logo" className="w-92 h-92"/>
+                    <div className = "bg-radial from-sidebar-accent to-sidebar relative hidden md:flex flex-col gap-y-4 items-center justify-center">
+                        <img src="/logo.svg" alt="Logo" className="w-[92px] h-[92px]"/>
                         <p>
                             MEET.AI
                         </p>
