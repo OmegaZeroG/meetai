@@ -46,7 +46,7 @@ Open [http://localhost:3000](http://localhost:3000).
 - [x] 08 — tRPC setup
 - [x] 09 — Agents setup
 - [x] 10 — Responsive dialog
-- [ ] 11 — Agents form
+- [x] 11 — Agents form
 - [ ] 12 — Agents data table
 - [ ] 13 — Agents filters
 - [ ] 14 — Agent page
