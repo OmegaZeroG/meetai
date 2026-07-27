@@ -45,7 +45,7 @@ Open [http://localhost:3000](http://localhost:3000).
 - [x] 07 — Dashboard navbar
 - [x] 08 — tRPC setup
 - [x] 09 — Agents setup
-- [ ] 10 — Responsive dialog
+- [x] 10 — Responsive dialog
 - [ ] 11 — Agents form
 - [ ] 12 — Agents data table
 - [ ] 13 — Agents filters
