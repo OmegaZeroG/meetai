@@ -20,21 +20,28 @@ import {
 import { GenerateAvatar } from "@/components/generator-avatar";
 import { useTRPC } from "@/trpc/client";
 import { agentsInsertSchema } from "../../schemas";
+import type { AgentGetOne } from "../../types";
 
 interface AgentFormProps {
   onSuccess?: () => void;
   onCancel?: () => void;
+  initialValues?: AgentGetOne;
 }
 
-export const AgentForm = ({ onSuccess, onCancel }: AgentFormProps) => {
+export const AgentForm = ({
+  onSuccess,
+  onCancel,
+  initialValues,
+}: AgentFormProps) => {
   const trpc = useTRPC();
   const queryClient = useQueryClient();
+  const isEdit = !!initialValues?.id;
 
   const form = useForm<z.infer<typeof agentsInsertSchema>>({
     resolver: zodResolver(agentsInsertSchema),
     defaultValues: {
-      name: "",
-      instructions: "",
+      name: initialValues?.name ?? "",
+      instructions: initialValues?.instructions ?? "",
     },
   });
 
@@ -52,10 +59,35 @@ export const AgentForm = ({ onSuccess, onCancel }: AgentFormProps) => {
     }),
   );
 
-  const isPending = createAgent.isPending;
+  const updateAgent = useMutation(
+    trpc.agents.update.mutationOptions({
+      onSuccess: async () => {
+        await queryClient.invalidateQueries(
+          trpc.agents.getMany.queryOptions({}),
+        );
+
+        if (initialValues?.id) {
+          await queryClient.invalidateQueries(
+            trpc.agents.getOne.queryOptions({ id: initialValues.id }),
+          );
+        }
+
+        onSuccess?.();
+      },
+      onError: (error) => {
+        toast.error(error.message);
+      },
+    }),
+  );
+
+  const isPending = createAgent.isPending || updateAgent.isPending;
 
   const onSubmit = (values: z.infer<typeof agentsInsertSchema>) => {
-    createAgent.mutate(values);
+    if (isEdit) {
+      updateAgent.mutate({ ...values, id: initialValues.id });
+    } else {
+      createAgent.mutate(values);
+    }
   };
 
   return (
@@ -107,7 +139,7 @@ export const AgentForm = ({ onSuccess, onCancel }: AgentFormProps) => {
             </Button>
           )}
           <Button disabled={isPending} type="submit">
-            Create
+            {isEdit ? "Save" : "Create"}
           </Button>
         </div>
       </form>
