@@ -54,7 +54,7 @@ Open [http://localhost:3000](http://localhost:3000).
 - [x] 16 — Meetings setup
 - [x] 17 — Meetings form
 - [x] 18 — Meetings data table
-- [ ] 19 — Meetings filters
+- [x] 19 — Meetings filters
 - [ ] 20 — Meeting page
 - [ ] 21 — Meeting variants
 - [ ] 22 — Video call
