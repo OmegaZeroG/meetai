@@ -10,6 +10,7 @@ import {
   AgentsViewError,
   AgentsViewLoading,
 } from "@/modules/agents/ui/views/agents-view";
+import { AgentsListHeader } from "@/modules/agents/ui/components/agents-list-header";
 
 const Page = async () => {
   const session = await auth.api.getSession({
@@ -25,6 +26,7 @@ const Page = async () => {
 
   return (
     <HydrateClient>
+      <AgentsListHeader />
       <Suspense fallback={<AgentsViewLoading />}>
         <ErrorBoundary fallback={<AgentsViewError />}>
           <AgentsView />
