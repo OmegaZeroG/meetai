@@ -1,15 +1,19 @@
-import { eq } from "drizzle-orm";
+import { eq, getTableColumns } from "drizzle-orm";
 
 import { db } from "@/db";
-import { meetings } from "@/db/schema";
+import { agents, meetings } from "@/db/schema";
 import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
 import { meetingsInsertSchema } from "../schemas";
 
 export const meetingsRouter = createTRPCRouter({
   getMany: protectedProcedure.query(async ({ ctx }) => {
     const data = await db
-      .select()
+      .select({
+        ...getTableColumns(meetings),
+        agent: agents,
+      })
       .from(meetings)
+      .innerJoin(agents, eq(meetings.agentId, agents.id))
       .where(eq(meetings.userId, ctx.auth.user.id));
 
     return data;

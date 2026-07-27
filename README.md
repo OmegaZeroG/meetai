@@ -53,7 +53,7 @@ Open [http://localhost:3000](http://localhost:3000).
 - [x] 15 — Agent update / delete
 - [x] 16 — Meetings setup
 - [x] 17 — Meetings form
-- [ ] 18 — Meetings data table
+- [x] 18 — Meetings data table
 - [ ] 19 — Meetings filters
 - [ ] 20 — Meeting page
 - [ ] 21 — Meeting variants
