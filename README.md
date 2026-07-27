@@ -48,7 +48,7 @@ Open [http://localhost:3000](http://localhost:3000).
 - [x] 10 — Responsive dialog
 - [x] 11 — Agents form
 - [x] 12 — Agents data table
-- [ ] 13 — Agents filters
+- [x] 13 — Agents filters
 - [ ] 14 — Agent page
 - [ ] 15 — Agent update / delete
 - [ ] 16 — Meetings setup
