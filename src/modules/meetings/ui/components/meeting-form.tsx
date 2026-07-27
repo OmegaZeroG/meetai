@@ -22,15 +22,22 @@ import { CommandSelect } from "@/components/command-select";
 import { NewAgentDialog } from "@/modules/agents/ui/components/new-agent-dialog";
 import { useTRPC } from "@/trpc/client";
 import { meetingsInsertSchema } from "../../schemas";
+import type { MeetingGetOne } from "../../types";
 
 interface MeetingFormProps {
   onSuccess?: () => void;
   onCancel?: () => void;
+  initialValues?: MeetingGetOne;
 }
 
-export const MeetingForm = ({ onSuccess, onCancel }: MeetingFormProps) => {
+export const MeetingForm = ({
+  onSuccess,
+  onCancel,
+  initialValues,
+}: MeetingFormProps) => {
   const trpc = useTRPC();
   const queryClient = useQueryClient();
+  const isEdit = !!initialValues?.id;
 
   const [agentSearch, setAgentSearch] = useState("");
   const [newAgentDialogOpen, setNewAgentDialogOpen] = useState(false);
@@ -45,8 +52,8 @@ export const MeetingForm = ({ onSuccess, onCancel }: MeetingFormProps) => {
   const form = useForm<z.infer<typeof meetingsInsertSchema>>({
     resolver: zodResolver(meetingsInsertSchema),
     defaultValues: {
-      name: "",
-      agentId: "",
+      name: initialValues?.name ?? "",
+      agentId: initialValues?.agentId ?? "",
     },
   });
 
@@ -64,10 +71,35 @@ export const MeetingForm = ({ onSuccess, onCancel }: MeetingFormProps) => {
     }),
   );
 
-  const isPending = createMeeting.isPending;
+  const updateMeeting = useMutation(
+    trpc.meetings.update.mutationOptions({
+      onSuccess: async () => {
+        await queryClient.invalidateQueries(
+          trpc.meetings.getMany.queryOptions({}),
+        );
+
+        if (initialValues?.id) {
+          await queryClient.invalidateQueries(
+            trpc.meetings.getOne.queryOptions({ id: initialValues.id }),
+          );
+        }
+
+        onSuccess?.();
+      },
+      onError: (error) => {
+        toast.error(error.message);
+      },
+    }),
+  );
+
+  const isPending = createMeeting.isPending || updateMeeting.isPending;
 
   const onSubmit = (values: z.infer<typeof meetingsInsertSchema>) => {
-    createMeeting.mutate(values);
+    if (isEdit) {
+      updateMeeting.mutate({ ...values, id: initialValues.id });
+    } else {
+      createMeeting.mutate(values);
+    }
   };
 
   return (
@@ -145,7 +177,7 @@ export const MeetingForm = ({ onSuccess, onCancel }: MeetingFormProps) => {
               </Button>
             )}
             <Button disabled={isPending} type="submit">
-              Create
+              {isEdit ? "Save" : "Create"}
             </Button>
           </div>
         </form>
