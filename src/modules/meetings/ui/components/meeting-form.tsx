@@ -54,7 +54,7 @@ export const MeetingForm = ({ onSuccess, onCancel }: MeetingFormProps) => {
     trpc.meetings.create.mutationOptions({
       onSuccess: async () => {
         await queryClient.invalidateQueries(
-          trpc.meetings.getMany.queryOptions(),
+          trpc.meetings.getMany.queryOptions({}),
         );
         onSuccess?.();
       },
