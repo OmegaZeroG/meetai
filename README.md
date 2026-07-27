@@ -33,6 +33,9 @@ Open [http://localhost:3000](http://localhost:3000).
 | `BETTER_AUTH_URL` | Base URL used by Better Auth |
 | `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` | Google OAuth app credentials |
 | `GITHUB_CLIENT_ID` / `GITHUB_CLIENT_SECRET` | GitHub OAuth app credentials |
+| `DISCORD_CLIENT_ID` / `DISCORD_CLIENT_SECRET` | Discord OAuth app credentials |
+| `NEXT_PUBLIC_STREAM_VIDEO_API_KEY` | Stream Video app API key |
+| `STREAM_VIDEO_SECRET_KEY` | Stream Video app secret key |
 
 ## Build Progress
 
@@ -57,7 +60,7 @@ Open [http://localhost:3000](http://localhost:3000).
 - [x] 19 — Meetings filters
 - [x] 20 — Meeting page
 - [x] 21 — Meeting variants
-- [ ] 22 — Video call
+- [x] 22 — Video call
 - [ ] 23 — Connecting agents
 - [ ] 24 — Background jobs
 - [ ] 25 — Completed state

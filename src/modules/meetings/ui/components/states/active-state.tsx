@@ -18,7 +18,7 @@ export const ActiveState = ({ meetingId }: Props) => {
         description="The meeting will end once all participants have left."
       />
       <Button asChild className="w-full lg:w-auto">
-        <Link href={`/meetings/${meetingId}/call`}>
+        <Link href={`/call/${meetingId}`}>
           <VideoIcon />
           Join meeting
         </Link>
