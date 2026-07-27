@@ -1,36 +1,71 @@
-  This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Meet.AI
+
+Meet.AI is a full-stack SaaS platform for video meetings with custom AI agents. Users create agents with their own personality and instructions, talk to them in real-time video calls, and get an automatic post-call summary, searchable transcript, and video replay.
+
+## Tech Stack
+
+- **Framework:** Next.js 15 (App Router), React 19, TypeScript
+- **Auth:** Better Auth (email/password + Google & GitHub OAuth)
+- **Database:** Neon Postgres + Drizzle ORM
+- **UI:** Tailwind CSS, shadcn/ui, Radix primitives, Lucide icons
+- **API layer:** tRPC (added in progress, see roadmap below)
+- **Video/AI:** Stream Video & Chat, OpenAI (planned)
+- **Payments:** Polar (planned)
+- **Deployment:** Vercel (planned)
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+npm install
+cp .env.example .env   # fill in your own DB, auth, and OAuth credentials
+npm run db:push        # push the Drizzle schema to your database
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Environment Variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Variable | Purpose |
+| --- | --- |
+| `DATABASE_URL` | Neon Postgres connection string |
+| `BETTER_AUTH_SECRET` | Better Auth session secret |
+| `BETTER_AUTH_URL` | Base URL used by Better Auth |
+| `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` | Google OAuth app credentials |
+| `GITHUB_CLIENT_ID` / `GITHUB_CLIENT_SECRET` | GitHub OAuth app credentials |
 
-## Learn More
+## Build Progress
 
-To learn more about Next.js, take a look at the following resources:
+- [x] 01 — Project setup
+- [x] 02 — Database (Neon + Drizzle)
+- [x] 03 — Auth setup (Better Auth)
+- [x] 04 — Auth UI
+- [x] 05 — Auth socials (Google & GitHub)
+- [x] 06 — Dashboard sidebar
+- [x] 07 — Dashboard navbar
+- [ ] 08 — tRPC setup
+- [ ] 09 — Agents setup
+- [ ] 10 — Responsive dialog
+- [ ] 11 — Agents form
+- [ ] 12 — Agents data table
+- [ ] 13 — Agents filters
+- [ ] 14 — Agent page
+- [ ] 15 — Agent update / delete
+- [ ] 16 — Meetings setup
+- [ ] 17 — Meetings form
+- [ ] 18 — Meetings data table
+- [ ] 19 — Meetings filters
+- [ ] 20 — Meeting page
+- [ ] 21 — Meeting variants
+- [ ] 22 — Video call
+- [ ] 23 — Connecting agents
+- [ ] 24 — Background jobs
+- [ ] 25 — Completed state
+- [ ] 26 — Transcript & chat
+- [ ] 27 — Payments
+- [ ] 28 — Bug fixes
+- [ ] 29 — Deployment
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Author
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Built by **Om Pathrabe**.
