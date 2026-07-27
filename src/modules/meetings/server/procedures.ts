@@ -3,6 +3,7 @@ import { eq } from "drizzle-orm";
 import { db } from "@/db";
 import { meetings } from "@/db/schema";
 import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
+import { meetingsInsertSchema } from "../schemas";
 
 export const meetingsRouter = createTRPCRouter({
   getMany: protectedProcedure.query(async ({ ctx }) => {
@@ -13,4 +14,21 @@ export const meetingsRouter = createTRPCRouter({
 
     return data;
   }),
+  create: protectedProcedure
+    .input(meetingsInsertSchema)
+    .mutation(async ({ input, ctx }) => {
+      const [createdMeeting] = await db
+        .insert(meetings)
+        .values({
+          ...input,
+          id: crypto.randomUUID(),
+          userId: ctx.auth.user.id,
+        })
+        .returning();
+
+      // TODO: create the Stream Video call + upsert the Stream user once
+      // the Video Call chapter wires that integration in.
+
+      return createdMeeting;
+    }),
 });

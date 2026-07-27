@@ -10,6 +10,7 @@ import {
   MeetingsViewError,
   MeetingsViewLoading,
 } from "@/modules/meetings/ui/views/meetings-view";
+import { MeetingsListHeader } from "@/modules/meetings/ui/components/meetings-list-header";
 
 const Page = async () => {
   const session = await auth.api.getSession({
@@ -25,6 +26,7 @@ const Page = async () => {
 
   return (
     <HydrateClient>
+      <MeetingsListHeader />
       <Suspense fallback={<MeetingsViewLoading />}>
         <ErrorBoundary fallback={<MeetingsViewError />}>
           <MeetingsView />
