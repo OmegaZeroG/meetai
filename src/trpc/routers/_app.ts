@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { createTRPCRouter, baseProcedure } from "../init";
 import { agentsRouter } from "@/modules/agents/server/procedures";
+import { meetingsRouter } from "@/modules/meetings/server/procedures";
 
 export const appRouter = createTRPCRouter({
   hello: baseProcedure
@@ -15,6 +16,7 @@ export const appRouter = createTRPCRouter({
       };
     }),
   agents: agentsRouter,
+  meetings: meetingsRouter,
 });
 
 // Export type definition of API

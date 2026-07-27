@@ -51,9 +51,9 @@ Open [http://localhost:3000](http://localhost:3000).
 - [x] 13 — Agents filters
 - [x] 14 — Agent page
 - [x] 15 — Agent update / delete
-- [ ] 16 — Meetings setup
-- [ ] 17 — Meetings form
-- [ ] 18 — Meetings data table
+- [x] 16 — Meetings setup
+- [x] 17 — Meetings form
+- [x] 18 — Meetings data table
 - [ ] 19 — Meetings filters
 - [ ] 20 — Meeting page
 - [ ] 21 — Meeting variants
