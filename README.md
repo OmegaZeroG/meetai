@@ -43,7 +43,7 @@ Open [http://localhost:3000](http://localhost:3000).
 - [x] 05 — Auth socials (Google & GitHub)
 - [x] 06 — Dashboard sidebar
 - [x] 07 — Dashboard navbar
-- [ ] 08 — tRPC setup
+- [x] 08 — tRPC setup
 - [ ] 09 — Agents setup
 - [ ] 10 — Responsive dialog
 - [ ] 11 — Agents form
