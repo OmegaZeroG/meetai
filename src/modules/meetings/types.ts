@@ -7,6 +7,9 @@ export type MeetingGetMany =
 
 export type MeetingGetOne = inferRouterOutputs<AppRouter>["meetings"]["getOne"];
 
+export type MeetingGetTranscript =
+  inferRouterOutputs<AppRouter>["meetings"]["getTranscript"];
+
 export enum MeetingStatus {
   Upcoming = "upcoming",
   Active = "active",

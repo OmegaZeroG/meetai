@@ -5,7 +5,9 @@ import { z } from "zod";
 import { db } from "@/db";
 import { agents, meetings } from "@/db/schema";
 import { generateAvatarUri } from "@/lib/avatar";
+import { GROQ_TEXT_MODEL, groq } from "@/lib/groq";
 import { streamVideo } from "@/lib/stream-video";
+import { fetchResolvedTranscript, formatTranscriptAsText } from "@/lib/transcript";
 import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
 import { meetingsInsertSchema, meetingsUpdateSchema } from "../schemas";
 import { MeetingStatus } from "../types";
@@ -62,6 +64,99 @@ export const meetingsRouter = createTRPCRouter({
       }
 
       return existingMeeting;
+    }),
+  getTranscript: protectedProcedure
+    .input(z.object({ meetingId: z.string() }))
+    .query(async ({ input, ctx }) => {
+      const [existingMeeting] = await db
+        .select()
+        .from(meetings)
+        .where(
+          and(
+            eq(meetings.id, input.meetingId),
+            eq(meetings.userId, ctx.auth.user.id),
+          ),
+        );
+
+      if (!existingMeeting) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Meeting not found",
+        });
+      }
+
+      if (!existingMeeting.transcriptUrl) {
+        return [];
+      }
+
+      return fetchResolvedTranscript(existingMeeting.transcriptUrl);
+    }),
+  askQuestion: protectedProcedure
+    .input(
+      z.object({
+        meetingId: z.string(),
+        question: z.string().min(1),
+        history: z
+          .array(
+            z.object({
+              role: z.enum(["user", "assistant"]),
+              content: z.string(),
+            }),
+          )
+          .default([]),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      const [existingMeeting] = await db
+        .select()
+        .from(meetings)
+        .where(
+          and(
+            eq(meetings.id, input.meetingId),
+            eq(meetings.userId, ctx.auth.user.id),
+          ),
+        );
+
+      if (!existingMeeting) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Meeting not found",
+        });
+      }
+
+      if (existingMeeting.status !== MeetingStatus.Completed) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "This meeting isn't completed yet",
+        });
+      }
+
+      const transcriptText = existingMeeting.transcriptUrl
+        ? formatTranscriptAsText(
+            await fetchResolvedTranscript(existingMeeting.transcriptUrl),
+          )
+        : "";
+
+      // Q&A is plain text, so it runs on Groq's free tier — no OpenAI
+      // spend required for this feature.
+      const completion = await groq.chat.completions.create({
+        model: GROQ_TEXT_MODEL,
+        messages: [
+          {
+            role: "system",
+            content: `You answer questions about one specific past meeting, using only the summary and transcript below. If the answer isn't contained in them, say you don't know based on the meeting instead of guessing.\n\nSummary:\n${existingMeeting.summary ?? "N/A"}\n\nTranscript:\n${transcriptText || "N/A"}`,
+          },
+          ...input.history.map((message) => ({
+            role: message.role,
+            content: message.content,
+          })),
+          { role: "user", content: input.question },
+        ],
+      });
+
+      return {
+        answer: completion.choices[0]?.message?.content ?? "",
+      };
     }),
   getMany: protectedProcedure
     .input(

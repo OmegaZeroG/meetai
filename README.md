@@ -9,7 +9,7 @@ Meet.AI is a full-stack SaaS platform for video meetings with custom AI agents. 
 - **Database:** Neon Postgres + Drizzle ORM
 - **UI:** Tailwind CSS, shadcn/ui, Radix primitives, Lucide icons
 - **API layer:** tRPC (added in progress, see roadmap below)
-- **Video/AI:** Stream Video & Chat, OpenAI (planned)
+- **Video/AI:** Stream Video, OpenAI Realtime (voice agent), Groq (free summary generation), Inngest (background jobs)
 - **Payments:** Polar (planned)
 - **Deployment:** Vercel (planned)
 
@@ -36,6 +36,8 @@ Open [http://localhost:3000](http://localhost:3000).
 | `DISCORD_CLIENT_ID` / `DISCORD_CLIENT_SECRET` | Discord OAuth app credentials |
 | `NEXT_PUBLIC_STREAM_VIDEO_API_KEY` | Stream Video app API key |
 | `STREAM_VIDEO_SECRET_KEY` | Stream Video app secret key |
+| `OPENAI_API_KEY` | OpenAI API key used to power the live AI agent voice in calls |
+| `GROQ_API_KEY` | Free Groq API key used to generate post-meeting summaries |
 
 ## Build Progress
 
@@ -61,10 +63,10 @@ Open [http://localhost:3000](http://localhost:3000).
 - [x] 20 — Meeting page
 - [x] 21 — Meeting variants
 - [x] 22 — Video call
-- [ ] 23 — Connecting agents
-- [ ] 24 — Background jobs
-- [ ] 25 — Completed state
-- [ ] 26 — Transcript & chat
+- [x] 23 — Connecting agents
+- [x] 24 — Background jobs
+- [x] 25 — Completed state
+- [x] 26 — Transcript & chat
 - [ ] 27 — Payments
 - [ ] 28 — Bug fixes
 - [ ] 29 — Deployment
